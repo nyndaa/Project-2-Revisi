@@ -8,9 +8,24 @@ import BankInfoModal from "../../components/bank-info/bank-info-modal";
 
 const BankInfoManagement = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedBank, setSelectedBank] = useState(null);
 
   const handleCloseModal = () => {
     setIsOpen(false);
+    setSelectedBank(null);
+  };
+
+  const handleEdit = (bank: any) => {
+    setSelectedBank(bank);
+    setIsOpen(true);
+  };
+
+  const handleDelete = (id: string) => {
+    console.log("delete:", id);
+  };
+
+  const fetchBanks = () => {
+    console.log("refresh bank list");
   };
 
   return (
@@ -22,13 +37,25 @@ const BankInfoManagement = () => {
             Manage destination accounts for customer transfers.
           </p>
         </div>
+
         <Button className="rounded-lg" onClick={() => setIsOpen(true)}>
           <FiPlus size={24} />
           Add Bank Account
         </Button>
       </div>
-      <BankInfoList />
-      <BankInfoModal isOpen={isOpen} onClose={handleCloseModal} />
+
+      <BankInfoList
+        banks={[]} // nanti isi dari API
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
+
+      <BankInfoModal
+        isOpen={isOpen}
+        onClose={handleCloseModal}
+        bank={selectedBank}
+        onSuccess={fetchBanks}
+      />
     </div>
   );
 };
